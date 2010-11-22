@@ -1,0 +1,13 @@
+<IfModule mod_rewrite.c>
+	RewriteEngine on
+	
+	RewriteRule ^communication_news.htm$ slab.php?slab_url=news
+	RewriteRule ^communication_media.htm$ slab.php?slab_url=media_statements
+	RewriteRule ^communication_events.htm$ slab.php?slab_url=events
+	RewriteRule ^careers_positions.htm$ slab.php?slab_url=positions
+	
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteRule ^(.*)$ slab.php?slab_url=$1&%{QUERY_STRING} [L]
+	RewriteRule ^$ slab.php [L]
+</IfModule>
