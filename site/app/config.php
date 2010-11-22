@@ -1,8 +1,8 @@
 <?php
 
 // Application
-Config::set('app.default_route', '/pages/index');
-Config::set('app.default_components', array('db', 'cookie', 'session', 'file', 'image'));
+Config::set('app.default_route', '/binka/index');
+Config::set('app.default_components', array(/*'db', */'cookie', 'session', 'file', 'image'));
 Config::set('app.default_helpers', array('html', 'number'));
 Config::set('app.load_model_schemas', true);
 Config::set('app.url_rewriting', true);

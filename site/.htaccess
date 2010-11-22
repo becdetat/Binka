@@ -1,10 +1,10 @@
 <IfModule mod_rewrite.c>
 	RewriteEngine on
 	
-	RewriteRule ^communication_news.htm$ slab.php?slab_url=news
-	RewriteRule ^communication_media.htm$ slab.php?slab_url=media_statements
-	RewriteRule ^communication_events.htm$ slab.php?slab_url=events
-	RewriteRule ^careers_positions.htm$ slab.php?slab_url=positions
+	# Redirects /post/<xxx> to /binka/post/<xxx> where <xxx> is a permalink or shortlink
+	RewriteRule ^post/(.*)$ slab.php?slab_url=binka/post/$1&%{QUERY_STRING} [L]
+	# Same as above, but for short urls (/p/aaa)
+	RewriteRule ^p/(.*)$ slab.php?slab_url=binka/post/$1&%{QUERY_STRING} [L]	
 	
 	RewriteCond %{REQUEST_FILENAME} !-d
 	RewriteCond %{REQUEST_FILENAME} !-f
