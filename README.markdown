@@ -2,7 +2,7 @@
 
 A semi-static PHP-based blog engine, with posts rendered from static Markdown files. No underlying database, no administrative console, built-in short URLs, comments outsourced to Disqus, each post is a physical file that works in a version control system.
 
-It isn't ready yet. I haven't even implemented Markdown support yet. I only started it yesterday. Take it easy.
+It isn't ready yet. <strike>I haven't even implemented Markdown support yet.</strike> ;-) I only started it yesterday. Take it easy.
 
 Binka is created and maintained by [Ben Scott/Belfry Images][5].
 
@@ -38,7 +38,7 @@ The post file is created locally, in a local working copy of the site. To post o
 
 
 ##Contributing
-Contributions are welcome, in any form including code contributions, bug reports, feature suggestions, documentation, testing, and general feedback. The current version can be forked from its [Github repository][1]. I'm using [PivotalTracker[2] for story tracking, and issues can be submitted on the [Github page][4].
+Contributions are welcome, in any form including code contributions, bug reports, feature suggestions, documentation, testing, and general feedback. The current version can be forked from its [Github repository][1]. I'm using [PivotalTracker][2] for story tracking, and issues can be submitted on the [Github page][4].
 
 
 ##License
@@ -46,7 +46,7 @@ Contributions are welcome, in any form including code contributions, bug reports
 I haven't even bothered with Creative Commons on this at the moment as it really is basic. Therefore the current branch of development is Public Domain. This may change in the future. It is likely that a future version will use the Creative Commons Attribution license.
 
 ###Third party libraries and components
-- The [Slab MVC framework][3] uses the CC A-SA license.
+- The [Slab MVC framework][3] uses the CC A-SA license
 - [Markdown Extra][6] Copyright (C) Michel Fortin, based on [Markdown][7] Copyright (C) John Gruber
 
 

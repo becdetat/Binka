@@ -7,7 +7,3 @@
 		<?php e($pageContent); ?>
 	</body>
 </html>
-
-
-
-
