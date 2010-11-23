@@ -5,12 +5,14 @@ class BinkaController extends AppController {
 	function beforeAction() {
 		parent::beforeAction();
 		$this->fileComponent = Dispatcher::loadComponent('file');
+		Dispatcher::loadThirdParty('markdown');
 	}
 
 	function index() {
 	}
 	
 	function post($link) {
+		// Find the post. $link is either the permalink or the shortlink.
 		$linkIsPermalink = true;
 		$matches = glob(Dispatcher::getFilename("/posts/{$link}_*.md"));
 		if (count($matches) == 0) {
@@ -18,21 +20,21 @@ class BinkaController extends AppController {
 			$linkIsPermalink = false;
 		}
 
+		// Can't find the post. This should be changed to an actual 404
 		if (count($matches) == 0) {
 			return $this->redirect('/four_oh_four');
 		}
 		
+		// Multiple matches. This can happen since the posts are stored as
+		// physical files without an enforced naming convention.
 		if (count($matches) > 1) {
 			return $this->view('multiple_matches');
 		}
 		
 		$filename = $matches[0];
+		$lines = explode("\n", $this->fileComponent->read($filename));		
 		
-		$title = '';
-		$tags = array();
-		$posted = time();
-		$post = '';
-		
+		// figure out the permalink and shortlink
 		$permalink = '';
 		$shortlink = '';		
 		if ($linkIsPermalink) {
@@ -45,9 +47,13 @@ class BinkaController extends AppController {
 			$permalink = str_replace("{$shortlink}_", $permalink);
 		}		
 		
-		$lines = explode("\n", $this->fileComponent->read($filename));		
+		$post = '';
 		
-		// TODO: strip out metadata
+		
+		// strip out metadata
+		$title = '';
+		$tags = array();
+		$posted = time();
 		$i = 0;
 		for ($i = 0; $i < count($lines); $i ++) {
 			$line = trim($lines[$i]);
@@ -71,11 +77,12 @@ class BinkaController extends AppController {
 			}
 		}
 
-		// TODO: process content
+		// pull out and process content
 		$i ++;
 		for (; $i < count($lines); $i ++) {
 			$post .= $lines[$i]."\n";
 		}
+		$post = Markdown($post);
 		
 		$this->set('permalink', $permalink);
 		$this->set('shortlink', $shortlink);

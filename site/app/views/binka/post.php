@@ -7,4 +7,4 @@
 	<?php } ?>
 </h3>
 
-<?php e(nl2br($post)); ?>
+<?php e($post); ?>
