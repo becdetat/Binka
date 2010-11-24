@@ -12,11 +12,15 @@ class BinkaController extends AppController {
 		Dispatcher::loadThirdParty('markdown');
 	}
 
-	function index() {
+	function page($p = 1) {
 		$files = glob(Dispatcher::getFilename("/posts/*{$this->binka_post_extension}"));
 		$files = array_reverse($files);
 		
-		if (count($files) > $this->binka_posts_per_page) $files = array_slice($files, 0, $this->binka_posts_per_page);
+		$from = ($p - 1) * $this->binka_posts_per_page;
+		$to = $from + $this->binka_posts_per_page;
+		$fileCount = count($files);
+		if ($to > $fileCount) $to = $fileCount;
+		$files = array_slice($files, $from, $to - $from);
 		
 		$posts = array();
 		foreach ($files as $filename) {
@@ -37,6 +41,9 @@ class BinkaController extends AppController {
 		}
 		
 		$this->set('posts', $posts);
+		$this->set('page', $p);
+		$this->set('showPreviousPostsLink', $to < $fileCount);
+		$this->set('showNextPostsLink', $from > 0);
 	}
 	
 	function post($link) {
