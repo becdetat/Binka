@@ -10,6 +10,8 @@ class BinkaController extends AppController {
 		parent::beforeAction();
 		$this->fileComponent = Dispatcher::loadComponent('file');
 		Dispatcher::loadThirdParty('markdown');
+		
+		$this->set('blogDomain', $_SERVER['SERVER_NAME']);
 	}
 
 	function page($p = 1) {
@@ -24,10 +26,7 @@ class BinkaController extends AppController {
 		
 		$posts = array();
 		foreach ($files as $filename) {
-			$shortlink = explode('_', basename($filename));
-			$shortlink = $shortlink[0];
-			$permalink = str_replace($shortlink.'_', '', basename($filename));
-			$permalink = str_replace($this->binka_post_extension, '', $permalink);
+			extract($this->_getPermalinkAndShortlink($filename));
 			extract($this->_processPost($filename));
 			
 			array_push($posts, array(
@@ -61,15 +60,18 @@ class BinkaController extends AppController {
 		
 		$filename = $matches[0];
 		
-		extract($this->_getPermalinkAndShortlink($link, $filename, $linkIsPermalink));		
+		extract($this->_getPermalinkAndShortlink($filename));
 		extract($this->_processPost($filename));		
 		
-		$this->set('permalink', $permalink);
-		$this->set('shortlink', $shortlink);
-		$this->set('title', $title);
-		$this->set('tags', $tags);
-		$this->set('posted', $posted);
-		$this->set('post', $post);
+		$this->set('post', array(
+			'permalink' => $permalink,
+			'shortlink' => $shortlink,
+			'title' => $title,
+			'tags' => $tags,
+			'posted' => $posted,
+			'post' => $post
+		));
+		
 	}
 	
 	function _getPostMatches($link) {
@@ -126,24 +128,19 @@ class BinkaController extends AppController {
 		
 		return $result;
 	}
-	function _getPermalinkAndShortlink($link, $filename, $linkIsPermalink) {
+	function _getPermalinkAndShortlink($filename) {
 		$permalink = '';
 		$shortlink = '';	
 		
-		// figure out the permalink and shortlink
-		if ($linkIsPermalink) {
-			$permalink = $link;
-			$shortlink = basename($filename, $this->binka_post_extension);
-			$shortlink = str_replace("_{$permalink}", '', $shortlink);
-		} else {
-			$shortlink = $link;
-			$permalink = basename($filename, $this->binka_post_extension);
-			$permalink = str_replace("{$shortlink}_", $permalink);
-		}
+		$shortlink = explode('_', basename($filename));
+		$shortlink = $shortlink[0];
+		$permalink = str_replace($shortlink.'_', '', basename($filename));
+		$permalink = str_replace($this->binka_post_extension, '', $permalink);
 
-		return array(
+		$result = array(
 			'permalink' => $permalink,
 			'shortlink' => $shortlink);
+		return $result;
 	}
 	
 	function four_oh_four() {
