@@ -6,5 +6,4 @@
 		|<?php eh($tags[$i]); ?>|<?php if ($i < count($tags) - 1) e(','); ?>
 	<?php } ?>
 </h3>
-
 <?php e($post); ?>

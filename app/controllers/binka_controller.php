@@ -1,5 +1,9 @@
 <?php
 class BinkaController extends AppController {
+	// Config:
+	var $binka_post_extension = '.markdown';
+	var $binka_posts_per_page = 10;
+	
 	var $fileComponent;
 	
 	function beforeAction() {
@@ -9,7 +13,30 @@ class BinkaController extends AppController {
 	}
 
 	function index() {
-	
+		$files = glob(Dispatcher::getFilename("/posts/*{$this->binka_post_extension}"));
+		$files = array_reverse($files);
+		
+		if (count($files) > $this->binka_posts_per_page) $files = array_slice($files, 0, $this->binka_posts_per_page);
+		
+		$posts = array();
+		foreach ($files as $filename) {
+			$shortlink = explode('_', basename($filename));
+			$shortlink = $shortlink[0];
+			$permalink = str_replace($shortlink.'_', '', basename($filename));
+			$permalink = str_replace($this->binka_post_extension, '', $permalink);
+			extract($this->_processPost($filename));
+			
+			array_push($posts, array(
+				'shortlink' => $shortlink,
+				'permalink' => $permalink,
+				'title' => $title,
+				'tags' => $tags,
+				'posted' => $posted,
+				'post' => $post
+			));
+		}
+		
+		$this->set('posts', $posts);
 	}
 	
 	function post($link) {
@@ -26,10 +53,9 @@ class BinkaController extends AppController {
 		}
 		
 		$filename = $matches[0];
-		$lines = explode("\n", $this->fileComponent->read($filename));		
 		
 		extract($this->_getPermalinkAndShortlink($link, $filename, $linkIsPermalink));		
-		extract($this->_processPost($lines));		
+		extract($this->_processPost($filename));		
 		
 		$this->set('permalink', $permalink);
 		$this->set('shortlink', $shortlink);
@@ -42,16 +68,18 @@ class BinkaController extends AppController {
 	function _getPostMatches($link) {
 		// Find the post. $link is either the permalink or the shortlink.
 		$linkIsPermalink = true;
-		$matches = glob(Dispatcher::getFilename("/posts/{$link}_*.md"));
+		$matches = glob(Dispatcher::getFilename("/posts/{$link}_*{$this->binka_post_extension}"));
 		if (count($matches) == 0) {
-			$matches = glob(Dispatcher::getFilename("/posts/*_{$link}.md"));
+			$matches = glob(Dispatcher::getFilename("/posts/*_{$link}{$this->binka_post_extension}"));
 			$linkIsPermalink = false;
 		}
 		return array(
 			'linkIsPermalink' => $linkIsPermalink,
 			'matches' => $matches);
 	}
-	function _processPost($lines) {
+	function _processPost($filename) {
+		$lines = explode("\n", $this->fileComponent->read($filename));		
+
 		$result = array(
 			'title' => '',
 			'tags' => array(),
@@ -98,11 +126,11 @@ class BinkaController extends AppController {
 		// figure out the permalink and shortlink
 		if ($linkIsPermalink) {
 			$permalink = $link;
-			$shortlink = basename($filename, '.md');
+			$shortlink = basename($filename, $this->binka_post_extension);
 			$shortlink = str_replace("_{$permalink}", '', $shortlink);
 		} else {
 			$shortlink = $link;
-			$permalink = basename($filename, '.md');
+			$permalink = basename($filename, $this->binka_post_extension);
 			$permalink = str_replace("{$shortlink}_", $permalink);
 		}
 
