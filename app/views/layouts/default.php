@@ -3,6 +3,8 @@
 	<head>
 		<title>Binka Blog Engine</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<link href='http://fonts.googleapis.com/css?family=Droid+Serif&subset=latin' rel='stylesheet' type='text/css'>
+		<link href="<?php e($html->url('/css/site.css')); ?>" rel="stylesheet"/>
 	</head>
 	<body>
 		<header>
@@ -10,14 +12,18 @@
 		</header>
 		<div>
 			<nav>
-				<a href="<?php e($html->url('/')); ?>">Home</a>
+				<div>
+					<a href="<?php e($html->url('/')); ?>">Home</a>
+				</div>
 			</nav>
 			<section>
 				<?php e($pageContent); ?>
 			</section>
 		</div>
 		<footer>
-			<a href="https://github.com/belfryimages/Binka">Binka Blog Engine</a> by <a href="http://blog.belfryimages.com.au">Belfry Images</a>
+			<div>
+				Powered by <a href="https://github.com/belfryimages/Binka">Binka Blog Engine</a> by <a href="http://blog.belfryimages.com.au">Belfry Images</a>
+			</div>
 		</footer>
 		
 		<style>

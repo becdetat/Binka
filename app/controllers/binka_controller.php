@@ -3,6 +3,8 @@ class BinkaController extends AppController {
 	// Config:
 	var $binka_post_extension = '.markdown';
 	var $binka_posts_per_page = 10;
+	var $binka_show_tweet_button = true;
+	var $binka_twitter_username = 'belfryimages';
 	
 	var $fileComponent;
 	
@@ -12,6 +14,8 @@ class BinkaController extends AppController {
 		Dispatcher::loadThirdParty('markdown');
 		
 		$this->set('blogDomain', $_SERVER['SERVER_NAME']);
+		$this->set('showTweetButton', $this->binka_show_tweet_button);
+		$this->set('twitterUsername', $this->binka_twitter_username);
 	}
 
 	function page($p = 1) {

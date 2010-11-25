@@ -1,0 +1,95 @@
+body {
+	font-family: 'Droid Serif', serif;
+	color: #555;
+	font-size: 12pt;
+	padding: 0; margin: 0;
+}
+
+body > header {
+	display: block;
+	border-bottom: 2px solid #999;
+	margin:  0 1em;
+}
+
+body > div > nav {
+	display: block;
+	padding: 2em;
+	margin: 0 2em 0 0;
+	width: 10em;
+	float: right;
+	background: #eee;
+	border: 1px solid #ddd;
+}
+body > div > nav > div {
+	font-size: 10pt;
+}
+
+body > div > section {
+	display: block;
+	padding: 0 16.5em 0 2em;
+}
+
+article {
+	display: block;
+	line-height: 1.5;
+	padding: 0 0 1em 0;
+}
+
+article>header>h1 {
+	font-size: 20pt;
+}
+article>header>h1 a {
+	color: #555;
+}
+article>header>h1 a:hover {
+	border-bottom: 1px solid #555;
+}
+
+article>footer {
+	display: block;
+	border-top: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+	width: 100%;
+	font-size: 10pt;
+	background: #eee;
+	padding: 0.2em 0.4em;
+}
+
+.twitter-share-button {
+	position: relative;
+	top: 3px;
+	margin: 0 0 0 0.5em;
+}
+
+blockquote {
+	border-left: 2px solid #ddd;
+	padding: 0.5em 0 0.5em 1em;
+}
+
+p code {
+	background: #eee;
+	border: 1px solid #ddd;
+	font-size: 10pt;
+	padding: 0 0.1em;
+}
+
+a {
+	color: cornflowerblue;
+	text-decoration: none;
+}
+a:hover {
+	border-bottom: 1px solid cornflowerblue;
+}
+
+
+body > footer {
+	display: block;
+	width: 100%;
+	background-color: #eee;
+	border-top: 1px solid #ddd;
+	margin: 1em 0 0 0;
+}
+body>footer>div{
+	padding: 1em;
+	font-size: 8pt;
+}
