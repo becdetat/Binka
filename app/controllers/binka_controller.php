@@ -28,6 +28,32 @@ class BinkaController extends AppController {
 		if ($to > $fileCount) $to = $fileCount;
 		$files = array_slice($files, $from, $to - $from);
 		
+		$posts = $this->_getPosts($files);
+		
+		$this->set('posts', $posts);
+		$this->set('page', $p);
+		$this->set('showPreviousPostsLink', $to < $fileCount);
+		$this->set('showNextPostsLink', $from > 0);
+	}
+	
+	function tag($t) {
+		$files = glob(Dispatcher::getFilename("/posts/*{$this->binka_post_extension}"));
+		$files = array_reverse($files);
+		
+		$posts = $this->_getPosts($files);
+		$filteredPosts = array();
+		foreach ($posts as $post) {
+			if (in_array($t, $post['tags'])) {
+				$filteredPosts[] = $post;
+			}
+		}
+		$posts = $filteredPosts;
+		
+		$this->set('tag', $t);
+		$this->set('posts', $posts);
+	}
+	
+	function _getPosts($files) {
 		$posts = array();
 		foreach ($files as $filename) {
 			extract($this->_getPermalinkAndShortlink($filename));
@@ -42,11 +68,7 @@ class BinkaController extends AppController {
 				'post' => $post
 			));
 		}
-		
-		$this->set('posts', $posts);
-		$this->set('page', $p);
-		$this->set('showPreviousPostsLink', $to < $fileCount);
-		$this->set('showNextPostsLink', $from > 0);
+		return $posts;
 	}
 	
 	function post($link) {

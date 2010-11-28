@@ -6,8 +6,10 @@
 	# Same as above, but for short urls (/p/aaa)
 	RewriteRule ^p/(.*)$ slab.php?slab_url=binka/post/$1&%{QUERY_STRING} [L]
 
-	# ditch the binka part of the path for the /page route. Who calls a blog engine Binka. And calls the main controller Binka. FFS.
+	# ditch the binka part of the path for the other routes. 
+	# Who calls a blog engine Binka. And calls the main controller Binka. FFS.
 	RewriteRule ^page/(.*)$ slab.php?slab_url=binka/page/$1&%{QUERY_STRING} [L]
+	RewriteRule ^tag/(.*)$ slab.php?slab_url=binka/tag/$1&%{QUERY_STRING} [L]
 	
 	RewriteCond %{REQUEST_FILENAME} !-d
 	RewriteCond %{REQUEST_FILENAME} !-f
