@@ -8,6 +8,12 @@ This is the second paragraph. Here is a [link to our sponsor][1].
 
 This is a <code>code tag</code>. I also want inline code done `via backticks` like in [Stack Overflow][2]. _freaking awesome_. Here's some preformatted code with a C# brush:
 
+The fold should follow this paragraph.
+
+@@FOLD
+
+The fold should precede this paragraph
+
 <pre class="brush:c#">
 public class Foo : IBar
 {

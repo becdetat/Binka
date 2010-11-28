@@ -40,7 +40,8 @@ class BinkaController extends AppController {
 		if ($to > $postCount) $to = $postCount;
 		$posts = array_slice($this->posts, $from, $to - $from);
 		
-		$this->set('posts', $posts);
+		
+		$this->set('intros', $this->__getIntroViews($posts));
 		$this->set('page', $p);
 		$this->set('showPreviousPostsLink', $to < $postCount);
 		$this->set('showNextPostsLink', $from > 0);
@@ -55,7 +56,7 @@ class BinkaController extends AppController {
 		}
 		
 		$this->set('tag', $t);
-		$this->set('posts', $tagPosts);
+		$this->set('intros', $this->__getIntroViews($tagPosts));
 	}
 	
 	function post($link) {
@@ -79,6 +80,11 @@ class BinkaController extends AppController {
 		
 		$this->set('post', $posts[0]);
 		
+	}
+	
+	function partial_post_intro() {
+		$this->set('post', $this->data['post']);
+		return $this->partial();
 	}
 	
 	
@@ -117,11 +123,13 @@ class BinkaController extends AppController {
 			'title' => '',
 			'tags' => array(),
 			'posted' => time(),
-			'post' => '');
+			'post' => '',
+			'intro' => '',
+			'hasMore' => false);
 			
 		$lines = explode("\n", $this->fileComponent->read($filename));		
 
-		// strip out metadata
+		// strip out metadata. Stops processing on first blank link.
 		$i = 0;
 		for ($i = 0; $i < count($lines); $i ++) {
 			$line = trim($lines[$i]);
@@ -151,8 +159,25 @@ class BinkaController extends AppController {
 			$result['post'] .= $lines[$i]."\n";
 		}
 		$result['post'] = Markdown($result['post']);
+		$result['intro'] = $result['post'];
+		$foldNeedle = '<p>@@FOLD</p>';
+		if (strContains($result['intro'], $foldNeedle)) {
+			$result['intro'] = explode($foldNeedle, $result['intro']);
+			$result['intro'] = $result['intro'][0];
+			$result['hasMore'] = true;
+			$result['post'] = str_replace($foldNeedle, '', $result['post']);
+		}
 		
 		return $result;
+	}
+	
+	function __getIntroViews($posts) {
+		$intros = array();
+		foreach ($posts as $post) {
+			$intros[] = 
+				Dispatcher::dispatch('/binka/partial_post_intro', array('post' => $post))->returnRender();
+		}
+		return $intros;
 	}
 }
 ?>
