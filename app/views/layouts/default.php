@@ -13,7 +13,19 @@
 		<div>
 			<nav>
 				<div>
-					<a href="<?php e($html->url('/')); ?>">Home</a>
+					<h1>Pages</h1>
+					<p>
+						<a href="<?php e($html->url('/')); ?>">Home</a>
+					</p>
+					<h1>Tags</h1>
+					<p>
+						<?php foreach ($tags as $tag => $tagCount) { ?>
+							<a href="<?php e($html->url('/tag/'.urlencode($tag))); ?>">
+								<?php eh($tag); ?> (<?php e($tagCount); ?>)
+							</a><br/>
+						<?php } ?>
+					</p>
+						
 				</div>
 			</nav>
 			<section>
