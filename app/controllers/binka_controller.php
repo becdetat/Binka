@@ -5,6 +5,7 @@ class BinkaController extends AppController {
 	var $binka_posts_per_page = 10;
 	var $binka_show_tweet_button = true;
 	var $binka_twitter_username = 'belfryimages';
+	var $binka_enable_syntaxhighlighter = true;
 	
 	var $fileComponent;
 	
@@ -22,6 +23,7 @@ class BinkaController extends AppController {
 		$this->set('blogDomain', $_SERVER['SERVER_NAME']);
 		$this->set('showTweetButton', $this->binka_show_tweet_button);
 		$this->set('twitterUsername', $this->binka_twitter_username);
+		$this->set('enableSyntaxHighlighter', $this->binka_enable_syntaxhighlighter);
 		$this->set('tags', $this->__getTags($this->posts));
 	}
 	
